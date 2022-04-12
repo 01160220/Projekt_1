@@ -53,3 +53,28 @@ class Transformacje:
         N = self.a/np.sqrt(1-self.ecc*np.sin(fi)**2)
         h = r/np.cos(fi)-N
         return fi, lam, h 
+
+    def blh_2_XYZ(fi, lam, h, self):
+        """
+        Funkcja przelicza współrzędne geodezyjne  
+        na współrzędne geocentryczne (ECEF).
+
+        Parameters
+        ----------
+        fi  : [float] : szerokość geodezyjna [rad]
+        lam : [float] : długość geodezyjna [rad]
+        h   : [float] : wysokość elipsoidalna [m]
+        a   : [float] : dłuższa półoś elipsoidy [m]
+        e2  : [float] : mimośrod elipsoidy [niemianowana]
+        Returns
+        -------
+        X   : [float] : współrzędna geocentryczna (ECEF) [m]
+        Y   : [float] : współrzędna geocentryczna (ECEF) [m]
+        Z   : [float] : współrzędna geocentryczna (ECEF) [m]
+    
+        """
+        N = self.a/m.sqrt(1-self.ecc*m.sin(fi)**2)
+        X = (N + h) * m.cos(fi) * m.cos(lam)
+        Y = (N + h) * m.cos(fi) * m.sin(lam)
+        Z = (N*(1-self.ecc) + h) * m.sin(fi)
+        return X, Y, Z
