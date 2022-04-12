@@ -14,12 +14,12 @@ class Transformacje:
             self.b = 6356752.31414036
             
         else:
-            raise NotImplementedError(f"{model} model not implemented")
+            raise NotImplementedError(f"{model} - ten model nie został zaimplementowany!")
         
         self.flattening = (self.a-self.b)/ self.a
         self.ecc = 2*self.flattening - self.flattening**2
 
-    def xyz_2_blh(X, Y, Z, self):
+    def xyz2blh(X, Y, Z, self):
         """
         Funkcja przelicza współrzędne geocentryczne (ECEF) 
         na współrzędne geodezyjne (Algorytm Hirvonena).
@@ -54,7 +54,7 @@ class Transformacje:
         h = r/np.cos(fi)-N
         return fi, lam, h 
     
-    def blh_2_XYZ(fi, lam, h, self):
+    def blh2XYZ(fi, lam, h, self):
         """
         Funkcja przelicza współrzędne geodezyjne  
         na współrzędne geocentryczne (ECEF).
@@ -79,7 +79,7 @@ class Transformacje:
         Z = (N*(1-self.ecc) + h) * m.sin(fi)
         return X, Y, Z
     
-    def blh_2_neu(fl1, fl2, self):
+    def blh2neu(fl1, fl2, self):
         """   
         Funkcja przelicza współrzędne Gaussa - Krugera  
         na współrzędne geodezyjne.
@@ -212,7 +212,7 @@ class Transformacje:
         y92 = y * m + 500000
         return(x92, y92)
     
-    def u92u00_2_GK(X, Y):
+    def u92u002GK(X, Y):
         """   
         Funkcja przelicza współrzędne układu 1992 lub układu 1992  
         na współrzędne Gaussa - Krugera.
@@ -256,7 +256,7 @@ class Transformacje:
             ma = m00
         return(xGK, yGK, lam0, ma)
     
-    def GK_2_blh(xGK, yGK, m, lam0, self):    
+    def GK2blh(xGK, yGK, m, lam0, self):    
         """   
         Funkcja przelicza współrzędne Gaussa - Krugera  
         na współrzędne geodezyjne.
@@ -301,7 +301,7 @@ class Transformacje:
         
         return(fi, lam)
     
-    def u92u00_2_blh(X, Y, self):
+    def u92u002blh(X, Y, self):
         """   
         Funkcja przelicza współrzędne układu 1992 lub układu 1992  
         na współrzędne Gaussa - Krugera.
@@ -350,7 +350,6 @@ class Transformacje:
         """   
         Funkcja wyznacza odległość na płaszczyźnie
         na podstawie współrzędnych płaskich prostokątnych
-        
         Parameters
         -------
         xP  : [float] : współrzędna X punktu poczatkowego [m]
@@ -370,7 +369,7 @@ class Transformacje:
         
         return(d)
     
-    def sel_sUK_red(X1, X2, s, self):
+    def selsUKred(X1, X2, s, self):
         """   
         Funkcja wyznacza redukcje orazodległość na elipsoidzie,
         w układzie Gaussa - Krugera i współrzędnych płaskich prostokątnych (1992/2000)
@@ -411,7 +410,7 @@ class Transformacje:
         
         return(sel, sGK, sUK, r)
     
-    def sel_az_vincent(fl1, fl2, self):
+    def selazvincent(fl1, fl2, self):
         """   
         Funkcja przelicza współrzędne Gaussa - Krugera  
         na współrzędne geodezyjne.
@@ -463,28 +462,6 @@ class Transformacje:
             
         return(sPK, Apk, Akp)
       
-    def R_M_N(self, fi):
-        """   
-        Funkcja przelicza kąty w radianach na stopnie
-        
-        Parameters
-        -------
-        fi : [float] : szerokość geodezyjna [rad]
-        a  : [float] : dłuższa półoś elipsoidy [m]
-        e2 : [float] : mimośrod elipsoidy [niemianowana]
-       
-        Returns
-        -------
-        R  : [float] : promień krzywizny południka  [m]
-        N  : [float] : promień krzywizny w pierwszym wertykale [m]
-        M  : [float] : średni promień krzywizny [m]
-        
-        """     
-        N = self.a/m.sqrt(1 - self.ecc * m.sin(fi)**2)
-        M = self.a * (1 - self.ecc)/m.sqrt((1 - self.ecc * m.sin(fi)**2)**3)
-        R = m.sqrt(M * N)
-            
-        return(R, N, M)  
         
     def rad2dms(rad):
         """   
